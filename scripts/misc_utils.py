@@ -22,7 +22,10 @@ def fetch_wilcards_dir():
         found_path = getattr(shared.cmd_opts, "wildcards_dir", None)
     
     if os.path.isdir(found_path):
-        setattr(shared.opts,"wcc_wildcards_directory",found_path)
+        try:
+            setattr(shared.opts,"wcc_wildcards_directory",found_path)
+        except:
+            print(f"{EXT_NAME}: Wildcard directory path is not set!")
         return found_path
     else:
         print("No wilcards directory was found, make sure you have the sd-dynamic-prompts extension installed, if you have a custom directory make sure to set it manually in the settings")

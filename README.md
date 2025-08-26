@@ -1,6 +1,9 @@
 # Wildcard Gallery
 ## My changes
-Basically it's the v1 version of wildcard gallery but my changes focus only on using .json files and image previews while natively hooking into the webui's positive/negative metadata handling. You still have to make a wildcard to edit the metadata for it but this way you can use wildcards to handle prompts that would otherwise have characters that the webui prunes on input. 
+Basically it's the v1 version of wildcard gallery but my changes focus only on using .json files and image previews while natively hooking into the webui's positive/negative metadata handling. You still have to make a wildcard to edit the metadata for it but this way you can use wildcards to handle prompts that would otherwise have special characters that the webui prunes on input. 
+
+Basically wildcards are still necessary if you want to do prompt editing and have an extranetwork in the prompt without it messing up.
+Eventually I might try a full re-write that just hooks the "styles" component into the tabs for visuals since that's why I even edited this. I wanted to save and preview all my prompts/styles.
 
 <img width="886" height="960" alt="image" src="https://github.com/user-attachments/assets/3917bd87-19e9-4eab-a6d8-435af6b41f8f" />
 

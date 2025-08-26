@@ -118,7 +118,7 @@ def get_safe_name_2(selected_wild_path, wild_paths_list):
 def enforce_asset_rules(active_wildcards, scan_dir):
     print("PromptTab: Enforcing strict asset rules...")
     if not os.path.isdir(scan_dir):
-        return
+        return 0
 
     VALID_IMAGE_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.webp', '.gif'}
     active_wildcards_set = {w.upper() for w in active_wildcards}
@@ -176,5 +176,7 @@ def enforce_asset_rules(active_wildcards, scan_dir):
                 os.rmdir(root)
             except OSError as e:
                 print(f"Error removing empty directory {root}: {e}")
+    
+    return archived_files_count
 
 if(not WILDCARDS_FOLDER): WILDCARDS_FOLDER = find_ext_wildcard_paths()

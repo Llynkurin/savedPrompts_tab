@@ -1,7 +1,9 @@
-
-  
-
 # Wildcard Gallery
+## My changes
+Basically it's the v1 version of wildcard gallery but my changes focus only on using .json files and image previews while natively hooking into the webui's positive/negative metadata handling. YYou still have to make a wildcard to edit the metadata for it but this way you can use wildcards to handle prompts that would otherwise have characters that the webui prunes on input. 
+
+
+# Original README
 
 
 ## What is this

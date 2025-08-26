@@ -1,6 +1,7 @@
 import os
 import glob
 import json
+import gradio as gr
 from collections import Counter 
 from modules import scripts, shared, ui_extra_networks, script_callbacks
 from modules.ui_extra_networks import quote_js
@@ -15,6 +16,32 @@ except ImportError:
     enforce_asset_rules = lambda x, y: None
 
 PROMPTS_DIR = os.path.join(scripts.basedir(), "Prompts")
+
+def prompt_tab_cleanup_callback():
+    print("PromptTab: Cleanup action triggered from settings page.")
+    wildcard_paths = collect_Wildcards(WILDCARDS_FOLDER)
+    archived_count = enforce_asset_rules(wildcard_paths, PROMPTS_DIR)
+    
+    if archived_count > 0:
+        status_message = f"Cleanup Ran: Archived {archived_count} files. Refresh page to run again."
+    else:
+        status_message = "Cleanup Ran: No stale files found. Refresh page to run again."
+    
+    return gr.Button.update(value=status_message)
+
+def on_ui_settings():
+    section = ("saved_prompts", "Saved Prompts")
+    shared.opts.add_option(
+        key="prompt_tab_action_clean_stale",
+        info=shared.OptionInfo(
+            "Clean Stale Assets",
+            "Moves prompt assets (previews, metadata) that don't correspond to an active wildcard to a backup folder (_tmp_bak_). Action runs when settings page is loaded.",
+            gr.Button,
+            component_args={},
+            refresh=prompt_tab_cleanup_callback,
+            section=section
+        )
+    )
 
 class ExtraNetworksPageSavedPrompts(ui_extra_networks.ExtraNetworksPage):
     def __init__(self):
@@ -59,11 +86,7 @@ class ExtraNetworksPageSavedPrompts(ui_extra_networks.ExtraNetworksPage):
     
     def refresh(self):
         wildcard_paths = collect_Wildcards(WILDCARDS_FOLDER)
-        
-        enforce_asset_rules(wildcard_paths, PROMPTS_DIR)
-        
         self.prompt_name_cache = self.precompute_prompt_names(wildcard_paths)
-        
         temp_metadata_cache = {}
         
         for path in wildcard_paths:
@@ -120,3 +143,4 @@ def on_before_ui():
     ui_extra_networks.register_page(ExtraNetworksPageSavedPrompts())
 
 script_callbacks.on_before_ui(on_before_ui)
+script_callbacks.on_ui_settings(on_ui_settings)
